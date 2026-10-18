@@ -1,6 +1,6 @@
-# F.R.I.D.A.Y V2 legal pages
+# F.R.I.D.A.Y legal pages
 
-This package contains a mini website for F.R.I.D.A.Y V2:
+This package contains a mini website for F.R.I.D.A.Y:
 - `index.html` — landing page
 - `terms.html` — Terms of Service
 - `privacy.html` — repository-audited Privacy Policy
