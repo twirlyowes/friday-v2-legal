@@ -1,4 +1,4 @@
-# F.R.I.D.A.Y V2 — Privacy code audit notes
+# F.R.I.D.A.Y — Privacy code audit notes
 
 **Reviewed:** 17 October 2026  
 **Repository:** https://github.com/twirlyowes/F.R.I.D.A.Y-V-2  
