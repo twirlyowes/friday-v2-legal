@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b12">
-  <meta name="description" content="How F.R.I.D.A.Y processes and retains data through its Discord bot and web dashboard.">
+  <meta name="description" content="How F.R.I.D.A.Y processes, stores and deletes information through its Discord bot and web dashboard.">
   <title>Privacy Policy — F.R.I.D.A.Y</title>
   <link rel="stylesheet" href="legal.css">
 </head>
@@ -25,65 +25,110 @@
   </header>
   <main id="main">
     <div class="doc-intro">
-      <span class="eyebrow">Effective 24 October 2026</span>
+      <span class="eyebrow">Draft · Last updated 6 November 2026</span>
       <h1>Privacy Policy</h1>
-      <p class="lead">This policy covers F.R.I.D.A.Y, its Discord bot and its web dashboard. It explains the information those services process and the practical limits on deletion.</p>
+      <p class="lead">This policy covers the F.R.I.D.A.Y Discord bot and its web dashboard. It explains what the code stores, where it is stored, how long it is kept, and where deletion is not yet automatic.</p>
+      <p class="meta">[ACTION REQUIRED: this is a draft for review. Remove this notice and set the publication date before the page goes live.]</p>
     </div>
 
-    <h2>1. Information processed by the bot</h2>
-    <p>Features vary by server settings. Depending on what a server enables and what users do, the bot may process:</p>
+    <h2>1. Who operates F.R.I.D.A.Y</h2>
+    <p>F.R.I.D.A.Y is an independently maintained project operated from India. [ACTION REQUIRED: legal name of the operator, registered or business address, and a dedicated privacy contact email. None of these is published here because none has been provided.]</p>
+    <p>Under the Digital Personal Data Protection Act, 2023 (the "DPDP Act"), the operator is likely to be a "Data Fiduciary" for the personal data it decides how to process. [ACTION REQUIRED: counsel to confirm this classification, and whether any processing relationship is a processor relationship.]</p>
+
+    <h2>2. Information the bot processes</h2>
+    <p>What is processed depends on which features a server enables and how members use them. This list is based on the bot's source code.</p>
     <ul>
-      <li><strong>Discord identifiers and profile details:</strong> user, server, channel and role IDs, usernames or display names, and avatar references needed for commands, tickets, logs and generated content.</li>
-      <li><strong>Messages and attachments:</strong> direct messages sent to ModMail, ticket conversations, attachment links and file details, and message content examined by configured word/link filters. When enabled, filtered content may be copied to a server's moderation-log channel.</li>
-      <li><strong>Moderation and verification records:</strong> warnings, strikes, reasons, timestamps, moderator identifiers, verification review records and related actions. The bot may also send moderation events to channels configured by the server.</li>
-      <li><strong>Activity and utility data:</strong> staff activity totals and history, AFK reasons and timestamps, temporary voice-room ownership records, short-lived verification state, and text or profile details used to create quote images. The snipe feature temporarily caches up to 15 deleted messages per channel in process memory.</li>
-      <li><strong>Server and owner configuration:</strong> command prefixes, selected channels and roles, ticket/verification/voice settings, moderation filters, YouTube notification settings, and server-access or no-prefix allowlists.</li>
-      <li><strong>Operational information:</strong> error details and diagnostic logs needed to run and troubleshoot the service. If console mirroring is configured, some diagnostic output may also be sent to a Discord channel selected by the operator.</li>
+      <li><strong>Discord identifiers:</strong> user, server, channel, role and message IDs, plus usernames, display names and avatar references, used to run commands and to record settings, logs and tickets.</li>
+      <li><strong>Server configuration:</strong> the command prefix; channel and role IDs; ticket, verification and voice settings; and the AutoMod, Anti-Nuke and AntiBot settings. These are stored in Firestore.</li>
+      <li><strong>Message content, in memory:</strong> AutoMod, the bad-word filter and link checks read message text in order to decide whether a message breaks a rule.</li>
+      <li><strong>Message content, copied to Discord:</strong> when the bad-word filter removes a message, up to 1,000 characters of it, with the author's ID and channel, can be posted to the server's moderation-log channel. That copy stays in Discord and is not stored in Firestore by that code path.</li>
+      <li><strong>Deleted messages, in memory:</strong> the snipe feature keeps up to 15 deleted messages per channel in the bot's memory so staff can view them. Nothing is written to Firestore for this.</li>
+      <li><strong>Quoted messages, in memory:</strong> the quote feature keeps up to 400 characters of the message being quoted, and the requester's ID, for up to one hour. The generated quote image is sent to Discord and is not removed when that memory expires.</li>
+      <li><strong>ModMail:</strong> direct messages sent to the bot before a ticket is opened are stored in Firestore (<code>modmail_pending</code>), including message text and attachment links, until they are forwarded to a ticket or dropped. Ticket records (<code>modmail_tickets</code>) store IDs, status and timestamps. Ticket conversations happen in Discord channels.</li>
+      <li><strong>Moderation records:</strong> warnings (reason, moderator tag, timestamp), strikes and strike counters, and case records (target and moderator names, and a reason of up to 2,000 characters). These are stored in Firestore.</li>
+      <li><strong>Staff activity:</strong> Active Time counters for online time, voice time, staff messages and selected moderation commands, plus daily and historical totals, all stored in Firestore by server and user ID.</li>
+      <li><strong>AFK:</strong> the AFK reason and timestamps, stored in Firestore and in memory.</li>
+      <li><strong>Verification:</strong> captcha answers are held in memory for up to 60 seconds. Verification review records (decisions and notes) are stored in Firestore.</li>
+      <li><strong>Temporary voice rooms:</strong> the room's channel ID, owner ID, server ID and creation time, stored in Firestore while the room exists.</li>
+      <li><strong>Anti-Nuke:</strong> when a member is quarantined, their previous roles are stored in Firestore (<code>quarantine_role_snapshots</code>) and removed when they are released. The undo buffer for deleted channels and roles is held in memory for up to two minutes, up to 200 entries, and includes channel and role names and permission overwrites.</li>
+      <li><strong>Access lists:</strong> IDs of delegated server owners, servers approved by the bot owner, and users granted no-prefix access, with who granted each entry and when.</li>
+      <li><strong>Operational data:</strong> runtime logs. If the operator sets a console-mirror channel, some log lines, which may include names, IDs and error details, are posted to that Discord channel. When Firestore quota is exhausted, writes can wait in the bot's memory for up to 50,000 operations or 48 MB.</li>
     </ul>
 
-    <h2>2. Information processed by the dashboard</h2>
+    <h2>3. The web dashboard</h2>
+    <p><strong>Discord sign-in (OAuth2).</strong> You sign in through Discord, and the dashboard requests two scopes: <code>identify</code> and <code>guilds</code>. The dashboard receives your user ID, username, display name and avatar reference, and the list of servers you are in, with each server's ID, name, icon, owner flag and permission bits. The dashboard keeps this list in your session. It does not store your Discord access token; the token is used only during sign-in. The dashboard keeps a hashed form of the token in memory only for rate-limit bookkeeping.</p>
+    <p><strong>Live permission checks.</strong> Each protected request checks your current server membership, owner status and permissions with Discord, using the bot. Access comes from that live check, not from the sign-in snapshot alone. Delegated owners must also be on the server's owner list.</p>
+    <p><strong>Cookies and sessions.</strong> The dashboard sets one first-party cookie, <code>friday.sid</code>. It is HTTP-only, uses SameSite=Lax, and is marked Secure in production. It lasts up to eight hours. The cookie identifies a session; the session data itself is held in the dashboard server's memory, not in Firestore. Sessions are capped at 500 and are cleared when the service restarts or redeploys, so you may need to sign in again. Signing out destroys the session. The dashboard uses no advertising or third-party cookies.</p>
+    <p><strong>Browser storage.</strong> The dashboard stores some interface preferences in your browser's localStorage: directory filters, favourite servers and setup-guide progress. These contain no tokens.</p>
+    <p><strong>Records stored from dashboard use:</strong></p>
     <ul>
-      <li><strong>Discord sign-in:</strong> when you sign in, Discord provides the dashboard with your user ID, username/display name, avatar reference, and the server list and permission information needed to determine which server settings you may access. OAuth access is requested for identity and server-list access; the dashboard checks current Discord membership and permissions again for protected actions.</li>
-      <li><strong>Session cookie:</strong> the dashboard uses a first-party, HTTP-only session cookie to keep you signed in. The session is designed to last up to eight hours and may end earlier after a restart or session-store eviction. It is used for authentication, not advertising.</li>
-      <li><strong>Settings and configuration history:</strong> changing settings can read or update Firestore records for server configuration, AutoMod, Anti-Nuke, AntiBot, command permissions and delegated-owner access. Configuration snapshots include saved settings and protection settings, the actor, timestamp and reason; the dashboard keeps the latest 30 snapshots per server and prunes older snapshots.</li>
-      <li><strong>Audit history:</strong> successful configuration, protection, voice, ModMail, appeal, verification, message-publication and access-list actions may be logged with the acting user's ID and display name, time, action, changed setting names and, where relevant, a target user ID. The dashboard keeps up to 75 recent dashboard-audit events per server; no automatic time-based expiry is configured for these events.</li>
-      <li><strong>Feature Center records:</strong> the dashboard may display or store ModMail conversation messages and staff replies; appeal reasons and case IDs; casebook staff notes; verification-review decisions and notes; staff activity data; temporary voice-room state; emergency-lockdown state; and message or embed content published through the dashboard, with its channel and creator details. Authorized server staff can access the relevant records through dashboard tools.</li>
-      <li><strong>Abuse prevention:</strong> dashboard sign-in and API rate limits temporarily count requests using request metadata such as the client's IP address. These counters are operational safeguards, not an advertising profile.</li>
+      <li><strong>Configuration and protection settings</strong> (<code>guild_configs</code>, <code>protection_configs</code>, <code>antibot_configs</code>, <code>command_permissions</code>, <code>server_owner_access</code>), including trusted-user lists.</li>
+      <li><strong>Dashboard audit events</strong> (<code>dashboard_audit_logs</code>): the acting user's ID and display name, the action, the names of changed settings, and a target user ID where relevant. Up to 75 events are kept per server.</li>
+      <li><strong>Configuration snapshots</strong> (<code>dashboard_config_versions</code>): the saved configuration and protection settings, the actor, a reason of up to 120 characters, and a timestamp. The latest 30 snapshots are kept per server.</li>
+      <li><strong>Appeals</strong> (<code>punishment_appeals</code>): the user ID, case ID, action, reason, status and timestamps.</li>
+      <li><strong>ModMail threads and DM sessions</strong> (<code>modmail_threads</code>, <code>modmail_dm_sessions</code>): staff can list up to 100 threads per server. A DM session record links a user to a thread and is removed when the thread is closed. [ACTION REQUIRED: confirm whether thread records store message text, and for how long.]</li>
+      <li><strong>Case notes and cases</strong> (<code>friday_cases</code>, <code>friday_case_notes</code>), <strong>verification reviews</strong> (<code>friday_verification_reviews</code>), and <strong>published messages</strong> (<code>friday_studio_messages</code>): these hold the note or review text, the content and embeds of published messages, channel details, and the creator's user ID.</li>
+      <li><strong>Emergency lockdowns</strong> (<code>emergency_lockdowns</code>): channel permission overwrites are saved while a lockdown is active so they can be restored. [ACTION REQUIRED: confirm whether these snapshots are deleted after restore.]</li>
+    </ul>
+    <p>Dashboard pages also keep a staff display-name cache in the server's memory for up to 24 hours. It is not written to Firestore.</p>
+
+    <h2>4. Why information is processed</h2>
+    <p>Information is used to run the commands and features a server enables; to route and answer ModMail and support tickets; to record and review moderation actions and appeals; to apply AutoMod, Anti-Nuke, AntiBot and verification rules; to manage temporary voice rooms; to produce staff activity reports; to check access to dashboard pages; to publish messages you choose to send through the dashboard; to prevent abuse; and to diagnose and fix failures.</p>
+
+    <h2>5. Where information is stored</h2>
+    <ul>
+      <li><strong>Firestore (Google Cloud):</strong> the persistent records described in sections 2 and 3.</li>
+      <li><strong>Server memory on hosting (Render):</strong> dashboard sessions, rate-limit counters, snipe and quote memory, the Anti-Nuke undo buffer, captcha state and the Firestore write queue. These are lost when the service restarts or redeploys.</li>
+      <li><strong>Discord:</strong> messages, ticket channels, transcripts, moderation-log posts, role and permission changes, and audit-log entries. Discord keeps these under its own policies, and deleting a copy in FRIDAY does not delete it from Discord.</li>
+      <li><strong>Hosting logs:</strong> Render keeps service logs under its own settings. [ACTION REQUIRED: confirm log retention on the hosting account.]</li>
+      <li><strong>GitHub Pages:</strong> this legal site is static and stores no user data.</li>
     </ul>
 
-    <h2>3. Why information is used</h2>
-    <p>Information is used to provide requested bot and dashboard features, route and review support tickets and appeals, maintain server settings, perform configured moderation and verification, manage voice rooms, calculate activity reports, enforce access permissions, publish messages, prevent abuse, diagnose failures and protect the service.</p>
-
-    <h2>4. Storage and sharing</h2>
-    <p>Selected configuration, moderation, access-control, ticket, appeal, case-note, activity and dashboard-history records are stored in Firebase/Cloud Firestore. The dashboard runs on a hosting service such as Render; its temporary web sessions and operational logs are handled by the deployment environment. The legal pages are hosted on GitHub Pages. Discord processes OAuth sign-in and hosts Discord messages, role changes, audit-log entries, ticket-log posts and transcript attachments sent through Discord.</p>
-    <p>Information may be visible to server owners and staff who have access to the relevant channels or dashboard controls. Service providers process data to operate their infrastructure. Information may also be disclosed where required by law or reasonably necessary to address security, abuse or harm. Each provider has its own privacy practices; see <a href="https://discord.com/privacy" rel="noopener noreferrer">Discord's Privacy Policy</a>.</p>
-    <p>F.R.I.D.A.Y is not designed to sell personal information.</p>
-
-    <h2>5. Retention and deletion</h2>
-    <p>There is no single retention period for all bot or dashboard data. Some records persist until an available control, a server administrator or the maintainer removes them.</p>
+    <h2>6. Retention and deletion</h2>
+    <p>There is no single retention period. The list below shows what the code does today. Where the code has no automatic deletion, this policy says so.</p>
     <ul>
-      <li><strong>ModMail:</strong> pending messages may remain stored if a user starts but does not finish the server-selection flow. Closing a ticket updates its metadata but does not automatically remove that record. A configured transcript may remain in the Discord ticket-log channel after the ticket channel is deleted. Dashboard ModMail threads and message history do not have a shared automatic expiry period.</li>
-      <li><strong>Moderation, appeals and review records:</strong> warnings and strikes generally remain until removed using supported controls or by an authorized administrator. Appeal records, case notes and verification-review results may remain in Firestore; no common time-based expiry is configured for all of these records.</li>
-      <li><strong>Activity data:</strong> the daily staff-activity reset zeroes current totals rather than deleting the underlying record. Historical activity snapshots may be retained separately.</li>
-      <li><strong>Dashboard history:</strong> configuration history is capped at the latest 30 snapshots per server, and older snapshots are pruned when a new snapshot is captured. Dashboard audit history is capped at 75 events per server but has no configured time-based expiry.</li>
-      <li><strong>Published messages:</strong> the dashboard can delete messages created and tracked through its message tool, including the tracked Firestore record. Copies, replies or other messages in Discord may remain independently.</li>
-      <li><strong>Temporary in-memory state:</strong> pending captcha state is short-lived (the reviewed implementation uses a 60-second timeout); quote editing state expires after about an hour; and the snipe cache is bounded and clears when the process restarts. These limits do not delete copies already sent to Discord.</li>
-      <li><strong>Configuration and access records:</strong> removing the bot from a server does not automatically erase Firestore configuration, delegated-owner/whitelist records, transcripts or provider logs. These may require separate action.</li>
-      <li><strong>Dashboard sessions:</strong> a session is intended to expire after up to eight hours and is held in a temporary session store; a deployment restart can clear it sooner.</li>
+      <li><strong>Deleted automatically:</strong> AFK records are removed when the member next speaks in that server. Voice-room records are removed when the room's channel is deleted. Quarantine role snapshots are removed when the member is released. Dashboard sessions expire after eight hours and are cleared on restart. Captcha state expires after 60 seconds, quote memory after one hour, and the snipe and Anti-Nuke undo memory is cleared on restart or after its limit.</li>
+      <li><strong>Capped, not time-limited:</strong> dashboard audit events (75 per server) and configuration snapshots (30 per server) are kept until they are pushed out by newer entries.</li>
+      <li><strong>Reset, not deleted:</strong> the daily staff-activity reset sets totals to zero. The records and any historical snapshots remain.</li>
+      <li><strong>Kept until removed:</strong> pending ModMail messages remain until forwarded or dropped. If a member starts a DM and never completes server selection, that message can remain in Firestore; no automatic expiry was found. Closed ticket records, warnings, strikes, case records, case notes, appeals, verification reviews, ModMail threads and published-message records have no automatic expiry in the code.</li>
+      <li><strong>Discord copies:</strong> ticket transcripts, moderation-log posts and quote images stay in Discord after the source record is removed, until someone deletes them there.</li>
+      <li><strong>After the bot leaves a server:</strong> Firestore configuration, access lists and records are not automatically erased.</li>
     </ul>
+    <p>[ACTION REQUIRED: operator to decide retention periods for each record type and to implement the deletion mechanisms they require. Until then, this section describes the gap rather than a promise.]</p>
 
-    <h2>6. Your choices and requests</h2>
-    <p>Server administrators can disable optional features, adjust channel permissions, use available commands to remove supported records, or remove the bot. Dashboard users can sign out to end their current session. These actions do not necessarily delete copies held by Discord, other providers or server staff.</p>
-    <p>For a privacy question or deletion request, use the <a href="https://github.com/twirlyowes" rel="noopener noreferrer">maintainer's GitHub profile</a> to request a private contact route. Do not post message contents, ticket transcripts, personal information or access tokens in a public issue. A request may need enough detail to identify the relevant server and feature, and it may not be possible to remove records from systems the maintainer does not control.</p>
+    <h2>7. How data is shared</h2>
+    <p>FRIDAY does not sell personal information. Information is shared with the following providers, each of which processes it under its own terms:</p>
+    <ul>
+      <li><strong>Discord:</strong> sign-in, messages, channels, roles, audit logs and logs posted to Discord.</li>
+      <li><strong>Google Cloud (Firestore):</strong> persistent records.</li>
+      <li><strong>Render:</strong> hosting for the bot and dashboard, server memory and service logs.</li>
+      <li><strong>GitHub:</strong> hosting for this legal site and for the source code.</li>
+      <li><strong>YouTube and Wikipedia:</strong> when those optional features are used, the search term or channel URL is sent to them.</li>
+    </ul>
+    <p>Information is visible to server owners and staff who have access to the relevant channels or dashboard controls. It may be disclosed where the law requires it, or where needed to address security, abuse or harm. [ACTION REQUIRED: confirm the regions where each provider stores data, and whether cross-border transfers need to be disclosed under the DPDP Act and its Rules.]</p>
 
-    <h2>7. Security</h2>
-    <p>The services use Discord permissions, server-side access checks, session protections and provider security controls. No internet service can guarantee perfect security. Server owners should restrict access to ticket, moderation and activity-log channels; operators should protect bot tokens and Firebase credentials.</p>
+    <h2>8. Server administrators and their controls</h2>
+    <p>Server administrators can turn features on or off, choose which channels and roles the bot uses, restrict channel permissions, review and change dashboard settings, and remove the bot. Several commands remove specific records. These controls do not delete copies in Discord, at Firestore, or in provider logs. Administrators are responsible for the channels they set up and for the members' information those channels contain.</p>
 
-    <h2>8. Age and third-party services</h2>
-    <p>Use F.R.I.D.A.Y only if you are eligible to use Discord under Discord's applicable age requirements and rules. The services rely on Discord, Firebase/Cloud Firestore, Render and GitHub Pages, and optional features may retrieve public YouTube feed data or send search terms to Wikipedia. Their availability and independent data practices are outside the maintainer's control.</p>
+    <h2>9. Your rights and requests</h2>
+    <p>You may ask what information is held about you, ask for it to be corrected, or ask for it to be deleted, subject to the limits in section 6. [ACTION REQUIRED: a dedicated contact method for privacy requests, a method for verifying the requester's identity, and a response timeline. The GitHub profile is not a private channel and must not be used for personal information.]</p>
+    <p>Do not post personal information, message content, ticket transcripts or access tokens in a public GitHub issue. Requests should name the server and the feature involved. Some requests cannot be fully met if the data sits in Discord, with another provider, or with a server administrator.</p>
+    <p>[ACTION REQUIRED: counsel to confirm which data principal rights and grievance procedures apply now, and which apply from the DPDP Act's substantive-obligation date.]</p>
 
-    <h2>9. Changes and contact</h2>
-    <p>This policy may change as the code, deployment or data practices change. The effective date at the top identifies the latest published version. For general project information, visit the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-V-2" rel="noopener noreferrer">F.R.I.D.A.Y bot repository</a> or the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-DASHBOARD" rel="noopener noreferrer">dashboard repository</a>. For privacy requests, use the private-contact process in section 6.</p>
+    <h2>10. Security</h2>
+    <p>The dashboard sends security headers that restrict scripts and framing. Its session cookie is HTTP-only and Secure in production. State-changing requests must come from the dashboard's own origin. Sign-in uses an OAuth state value. Protected actions check Discord permissions live. Rate limits apply to sign-in and to API calls. The bot and dashboard read their secrets from environment variables rather than source code, and the dashboard refuses to start in production without a session secret. Those are the measures the code shows.</p>
+    <p>No system is completely secure. [ACTION REQUIRED: the Firestore security rules, IAM settings and backup arrangements were not reviewed here and are not described.]</p>
+
+    <h2>11. Children and age</h2>
+    <p>F.R.I.D.A.Y is intended for users who are old enough to use Discord under Discord's own rules. [ACTION REQUIRED: confirm Discord's current minimum age.] Under the DPDP Act, a child is a person under 18, and the Act requires verifiable parental consent before processing a child's data. Those children's-data duties apply from the DPDP Act's substantive-obligation date, not yet. Counsel should confirm how this applies to a bot that a server may use with members of any age.</p>
+
+    <h2>12. Legal framework and its timing</h2>
+    <p>The DPDP Act, 2023 and the Digital Personal Data Protection Rules, 2025 were notified in November 2025 and are being brought into force in stages. The Data Protection Board was established in November 2025. Consent-manager provisions start in November 2026. The main obligations, including notice, consent, security safeguards, breach notification, data principal rights and children's data, are scheduled for May 2027. Official gazette dates for these stages differ by a day across sources. [ACTION REQUIRED: counsel to confirm the exact commencement dates from the gazette.]</p>
+    <p>Section 43A of the Information Technology Act, 2000 and the SPDI Rules are scheduled to be omitted with the main obligations. Sources disagree on whether they already stopped applying. [ACTION REQUIRED: counsel to confirm which regime applies on the publication date.]</p>
+    <p>This section is a summary for information only. It is not legal advice, and it does not guarantee compliance with any law.</p>
+
+    <h2>13. Changes and contact</h2>
+    <p>This policy changes when the code or data practices change. The date at the top identifies the latest version. For general project information, see the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-V-2" rel="noopener noreferrer">F.R.I.D.A.Y bot repository</a> or the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-DASHBOARD" rel="noopener noreferrer">dashboard repository</a>. For privacy requests, use the contact method in section 9 once it is published.</p>
     <p class="meta">F.R.I.D.A.Y is an independently maintained project and is not an official Discord product.</p>
   </main>
   <footer>
