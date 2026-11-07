@@ -25,47 +25,78 @@
   </header>
   <main id="main">
     <div class="doc-intro">
-      <span class="eyebrow">Effective 24 October 2026</span>
+      <span class="eyebrow">Draft · Last updated 6 November 2026</span>
       <h1>Terms of Service</h1>
-      <p class="lead">These terms apply when you invite, configure or use the F.R.I.D.A.Y Discord bot or web dashboard.</p>
+      <p class="lead">These terms apply when you invite, configure or use the F.R.I.D.A.Y Discord bot or its web dashboard.</p>
+      <p class="meta">[ACTION REQUIRED: this is a draft for review. Remove this notice, resolve the bracketed items, and set the publication date before the page goes live.]</p>
     </div>
 
-    <h2>1. Using F.R.I.D.A.Y</h2>
-    <p>F.R.I.D.A.Y is an independently maintained Discord application. Depending on configuration and permissions, it provides server settings, moderation and protection tools, verification, ModMail tickets, temporary voice rooms, staff activity reports, utilities, and optional notifications. The web dashboard lets authorized users view and change supported settings for servers they manage.</p>
-    <p>By inviting, configuring or using the bot or dashboard, you agree to these terms. If you do not agree, do not use the service and remove the bot from servers where you have permission to do so.</p>
+    <h2>1. Accepting these terms</h2>
+    <p>By inviting, configuring or using the bot or the dashboard, you agree to these terms and to the <a href="privacy.html">Privacy Policy</a>. If you do not agree, do not use the service, and remove the bot from any server you manage.</p>
 
-    <h2>2. Discord and account access</h2>
-    <p>You must comply with Discord's Terms of Service, Community Guidelines and applicable eligibility requirements. Discord is a separate service and is not operated by the F.R.I.D.A.Y maintainer. Dashboard sign-in uses Discord OAuth; you authorize the dashboard to identify you and request the server list needed to determine your access.</p>
-    <p>You may use the dashboard only for servers where you have the required current permissions or have been given supported delegated access. Do not attempt to bypass access checks, impersonate another user or gain access to another server's configuration.</p>
+    <h2>2. What F.R.I.D.A.Y is</h2>
+    <p>F.R.I.D.A.Y is an independently maintained Discord application. Depending on what a server enables, it provides server settings, moderation tools, AutoMod, Anti-Nuke and AntiBot protection, verification, ModMail support tickets, temporary voice rooms, staff activity reports, message publishing, quote images, utilities and optional YouTube notifications. The web dashboard lets authorised users view and change supported settings for servers they manage.</p>
 
-    <h2>3. Server-owner responsibilities</h2>
-    <p>If you invite or configure F.R.I.D.A.Y, you confirm that you have authority to do so and to grant the requested permissions. Server owners and administrators are responsible for role and channel permissions, feature choices, moderation decisions, and informing their community about relevant server practices and data handling.</p>
-    <p>Ticket content, transcripts, moderation logs and activity reports may be visible in channels selected by server staff. Keep those channels appropriately restricted and follow applicable law and Discord rules when processing member information.</p>
+    <h2>3. Eligibility and accounts</h2>
+    <p>You must be eligible to use Discord under Discord's terms and age rules. Dashboard sign-in uses your Discord account. You are responsible for activity under your account and for keeping your Discord credentials secure. [ACTION REQUIRED: confirm Discord's current minimum age.]</p>
 
-    <h2>4. Acceptable use</h2>
-    <p>You must not use F.R.I.D.A.Y to break the law, violate another person's rights, harass or threaten people, conduct raids or spam, facilitate scams, disrupt Discord or related services, evade platform enforcement, bypass security controls, or collect or disclose personal information without appropriate authority.</p>
-    <p>Do not submit passwords, payment details, government identification or other sensitive information through the bot, tickets, appeal forms or dashboard. The service is not designed to request those details.</p>
+    <h2>4. Server owners and administrators</h2>
+    <p>If you invite or configure F.R.I.D.A.Y, you confirm that you have authority to do so and to grant the permissions it requests. Server owners and administrators are responsible for:</p>
+    <ul>
+      <li>role hierarchy, channel permissions and the feature choices made for their server;</li>
+      <li>moderation decisions, including decisions influenced by automated rules;</li>
+      <li>keeping ticket, log and moderation channels restricted to appropriate staff; and</li>
+      <li>telling their members how the server uses the bot and what data it processes.</li>
+    </ul>
+    <p>Delegated owners, which the server owner can add on the dashboard, have the same responsibilities for the areas they can manage.</p>
 
-    <h2>5. Content, moderation and appeals</h2>
-    <p>The bot may process messages and related events to handle commands, support tickets, configured filters, message sniping, quote images and staff activity. Ticket messages may be relayed between a member's DMs and a server ticket channel. When configured, ticket closure may generate a transcript in the server's ticket-log channel; deleting the ticket channel does not automatically delete that transcript or other copies in Discord.</p>
-    <p>Server staff remain responsible for decisions made using warnings, strikes, timeouts, kicks, bans, verification or activity reports. An appeal submission requests review; it does not automatically remove or reverse a punishment. Do not rely on F.R.I.D.A.Y as your only moderation, security, backup or incident-response system.</p>
+    <h2>5. Permissions the bot uses</h2>
+    <p>The bot's permissions depend on the features you enable. Common permissions include Manage Roles, Manage Channels, Manage Messages, Kick Members, Ban Members, Moderate Members, View Audit Log and Manage Webhooks. Discord's own permission and role-hierarchy rules still apply.</p>
+    <p><strong>FRIDAY Shield.</strong> When Anti-Nuke is turned on, from a command or the dashboard, FRIDAY creates a role named <strong>FRIDAY Shield</strong> with the Administrator permission. It places the role directly below the bot's highest role and gives the role to the bot. Administrator bypasses channel permission settings in the server. The server owner should understand that this gives the bot very broad access, and that anyone who controls the bot's account or token could use that access. Turning Anti-Nuke off with <code>antinuke disable</code> stops monitoring but keeps the role. The server owner can remove the role at any time, but removing it may stop Anti-Nuke from working.</p>
 
-    <h2>6. Third-party services and availability</h2>
-    <p>The service depends on Discord, Firebase/Cloud Firestore, hosting infrastructure and GitHub Pages for the published legal pages. Optional features may retrieve public YouTube feed information or use Wikipedia's public API. These services have independent terms, privacy practices and availability, which the maintainer does not control.</p>
-    <p>F.R.I.D.A.Y is provided on an “as available” basis. Features may change, be interrupted, fail, or be unavailable because of configuration, permissions, role hierarchy, network conditions, provider outages or API limits. No guarantee is made that the service will be uninterrupted, error-free or suitable for every purpose.</p>
+    <h2>6. Acceptable use</h2>
+    <p>You must not use F.R.I.D.A.Y to break the law or violate other people's rights; to harass, threaten or impersonate people; to run raids, spam or scams; to disrupt Discord or FRIDAY; to bypass security or access controls, including the dashboard's Discord permission checks; or to collect or disclose personal information without proper authority.</p>
+    <p>Do not send passwords, payment details, government identification or other sensitive information through the bot, tickets, appeals or the dashboard. The service is not designed to request these.</p>
 
-    <h2>7. Stored information and removal</h2>
-    <p>The <a href="privacy.html">Privacy Policy</a> explains what information may be processed and how retention works. Removing the bot or signing out of the dashboard does not automatically delete all records, transcripts, messages, backups or provider logs. Server owners should use available controls and review the permissions and retention practices of their own Discord channels.</p>
+    <h2>7. Moderation and automated enforcement</h2>
+    <p>Automated features act on rules that a server chooses to enable. They can delete messages, time members out, remove roles, quarantine members, kick or ban members, and remove or recreate channels and roles, depending on the settings. Automated decisions can be wrong. Server staff remain responsible for reviewing outcomes, correcting mistakes and keeping moderation logs.</p>
+    <p>Anti-Nuke responds to mass deletions, mass bans and kicks, webhook creation, unauthorised bots and dangerous permission changes. It depends on Discord's audit log, which can be delayed or incomplete. It cannot stop an attack that Discord's permissions do not allow the bot to stop, and it does not guarantee that every harmful change will be reversed.</p>
+    <p>Do not rely on F.R.I.D.A.Y as your only moderation, security, backup or incident-response system.</p>
 
-    <h2>8. Suspension and termination</h2>
-    <p>The maintainer may restrict access, suspend features or discontinue the service for security, abuse prevention, maintenance, legal compliance or operational reasons. Server administrators can remove the bot from their server at any time. No party should rely on the continued availability of any feature.</p>
+    <h2>8. ModMail, tickets and appeals</h2>
+    <p>Members can message the bot to open a support ticket with a server's staff. Messages may be relayed between the member's direct messages and a ticket channel in the server. When closing a ticket, the server's ticket-log channel may receive a transcript, and that copy is kept in Discord until someone deletes it. Deleting the ticket channel does not delete transcripts or other copies.</p>
+    <p>An appeal asks staff to review a punishment. Submitting an appeal does not remove or reverse the punishment. Staff decide each appeal, and their decision is final within the server.</p>
 
-    <h2>9. Disclaimer and liability</h2>
-    <p>To the maximum extent permitted by applicable law, the service is provided without warranties that it will be secure in every circumstance, uninterrupted, error-free or free from data loss. To the maximum extent permitted by law, the maintainer is not liable for indirect, incidental, special, consequential or punitive damages arising from use of, or inability to use, the service. Nothing in these terms excludes liability that cannot legally be excluded.</p>
+    <h2>9. Premium and blessed servers</h2>
+    <p>[ACTION REQUIRED: a premium or blessed-server feature was described for this review, with owner-controlled activation through commands such as <code>bless</code> and <code>unbless</code>, and a <code>.premium</code> status command. That feature was not found in the reviewed source code of the bot's main branch. This section is intentionally left empty until the operator confirms whether the feature exists, how access is granted, what changes can be made, and whether any payment is involved. Do not publish this section until then.]</p>
 
-    <h2>10. Changes and contact</h2>
-    <p>These terms may be updated when the service or its requirements change. The effective date at the top identifies the latest published version. Continued use after an update indicates acceptance to the extent permitted by applicable law.</p>
-    <p>For general project information, visit the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-V-2" rel="noopener noreferrer">F.R.I.D.A.Y bot repository</a> or the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-DASHBOARD" rel="noopener noreferrer">dashboard repository</a>. For privacy requests, see section 6 of the <a href="privacy.html">Privacy Policy</a>. Do not publish sensitive information or confidential ticket content in a public issue.</p>
+    <h2>10. Service availability and changes</h2>
+    <p>F.R.I.D.A.Y is provided on an as-available basis. Features may change, be limited, be interrupted or fail. Availability can depend on Discord's API limits and permissions, the hosting provider, Firestore quotas and network conditions. The operator may change or remove features, and will try to give notice of material changes where practical.</p>
+
+    <h2>11. Suspension and termination</h2>
+    <p>The operator may restrict or suspend access, disable features or discontinue the service to protect users and the service, to prevent abuse, to comply with law, or for operational reasons. Server administrators can remove the bot at any time, and users can stop using the dashboard by signing out.</p>
+
+    <h2>12. Data and the Privacy Policy</h2>
+    <p>The <a href="privacy.html">Privacy Policy</a> explains what information is processed, where it is stored and how long it is kept. Removing the bot or signing out does not automatically delete all records, transcripts, messages or provider logs. Some records have no automatic deletion yet, as the Privacy Policy describes.</p>
+
+    <h2>13. Intellectual property and branding</h2>
+    <p>The F.R.I.D.A.Y name, logos and visual identity belong to the operator. You may not use them to suggest an official relationship with Discord or with any other organisation. [ACTION REQUIRED: the software licence for the code in the public repositories, if any, and whether it is incorporated here.]</p>
+
+    <h2>14. Third-party services</h2>
+    <p>F.R.I.D.A.Y depends on Discord, Google Cloud (Firestore), Render, GitHub and, for optional features, YouTube and Wikipedia. Each has its own terms, privacy practices and availability, which the operator does not control. Discord's terms continue to apply to your use of Discord.</p>
+
+    <h2>15. Disclaimers and limitation of liability</h2>
+    <p>To the extent permitted by applicable law, the service is provided without warranties that it will be uninterrupted, error-free, suitable for any purpose, or secure against every threat. To the extent permitted by law, the operator is not liable for indirect, incidental, special, consequential or punitive loss, or for loss of data, arising from your use of, or inability to use, the service. Nothing in these terms excludes liability that cannot lawfully be excluded.</p>
+    <p>[ACTION REQUIRED: counsel to review this section against Indian contract and consumer protection law.]</p>
+
+    <h2>16. Changes to these terms</h2>
+    <p>These terms may change when the service or the law changes. The date at the top identifies the latest version. Continued use after a change means you accept it, to the extent the law allows.</p>
+
+    <h2>17. Governing law and disputes</h2>
+    <p>[ACTION REQUIRED: the governing law, the courts or forum for disputes, and any dispute-resolution procedure. The operator is based in India; counsel should confirm the wording.]</p>
+
+    <h2>18. Contact</h2>
+    <p>[ACTION REQUIRED: a published contact method for legal and general enquiries. For general project information, see the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-V-2" rel="noopener noreferrer">F.R.I.D.A.Y bot repository</a> or the <a href="https://github.com/twirlyowes/F.R.I.D.A.Y-DASHBOARD" rel="noopener noreferrer">dashboard repository</a>. Do not post personal information or sensitive ticket content in a public issue.]</p>
     <p class="meta">F.R.I.D.A.Y is an independently maintained project and is not an official Discord product.</p>
   </main>
   <footer>
